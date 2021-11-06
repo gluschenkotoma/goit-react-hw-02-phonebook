@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import shortid from "shortid";
 
 import contactList from "./phonelist.json";
+
 import ContactList from "./components/ContactList";
 import ContactForm from "./components/ContactForm";
 import ContactFilter from "./components/ContactFilter";
