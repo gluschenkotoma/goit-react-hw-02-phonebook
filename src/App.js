@@ -1,30 +1,31 @@
-// import logo from './logo.svg';
-import "./App.css";
 import React, { Component } from "react";
+import shortid from "shortid";
 
-import ContactForm from "./components/ContactForm";
+import contactList from "./phonelist.json";
 import ContactList from "./components/ContactList";
-import Filter from "./components/Filter";
-import { v1 as uuid } from "uuid";
+import ContactForm from "./components/ContactForm";
+import ContactFilter from "./components/ContactFilter";
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: "id-1", name: "Rosie Simpson", phoneNumber: "459-12-56" },
-      { id: "id-2", name: "Hermione Kline", phoneNumber: "443-89-12" },
-      { id: "id-3", name: "Eden Clements", phoneNumber: "645-17-79" },
-      { id: "id-4", name: "Annie Copeland", phoneNumber: "227-91-26" },
-    ],
+    contacts: contactList,
     filter: "",
   };
 
-  addContact = ({ name, phoneNumber }) => {
+  addContact = (name, number) => {
     if (this.isInContacts(name)) {
       alert(`${name} is already in contacts`);
       return;
     }
-    const newContact = { id: uuid(), name, phoneNumber };
-    this.setState(({ contacts }) => ({ contacts: [newContact, ...contacts] }));
+    const contact = {
+      id: shortid.generate(),
+      name,
+      number,
+    };
+
+    this.setState((prevState) => ({
+      contacts: [contact, ...prevState.contacts],
+    }));
   };
 
   isInContacts = (name) => {
@@ -44,32 +45,34 @@ class App extends Component {
     }));
   };
 
+  //фильтр,принятие ивента
   changeFilter = (e) => {
-    this.setState({ filter: e.target.value });
+    this.setState({ filter: e.currentTarget.value });
   };
-
-  getFilteredContacts = () => {
-    const normalizedFilter = this.state.filter.toLowerCase();
-    return this.state.contacts.filter((contact) =>
+  // метод фильтрации массива
+  getVisibleContacts = () => {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter((contact) =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
 
   render() {
+    const { filter } = this.state;
+    const visibleContacts = this.getVisibleContacts();
     return (
-      <div className="App">
+      <div>
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.addContact} />
-
         <h2>Contacts</h2>
-        <Filter onChange={this.changeFilter} />
+        <ContactFilter onChange={this.changeFilter} value={filter} />
         <ContactList
-          contacts={this.getFilteredContacts()}
+          contacts={visibleContacts}
           onDeleteContact={this.deleteContact}
         />
       </div>
     );
   }
 }
-
 export default App;

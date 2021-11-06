@@ -1,70 +1,51 @@
 import React, { Component } from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import PropTypes from 'prop-types';
-
-import s from './ContactForm.module.css';
-import FormButton from '../FormButton/FormButton';
-
-export class ContactForm extends Component {
+class ContactForm extends Component {
   state = {
     name: '',
-    phoneNumber: '',
+    number: '',
+  };
+  handleChange = e => {
+    console.log(e.target.value); //то что вводим
+    console.log(e.target.name); //имя
+    const { name, value } = e.currentTarget;
+    this.setState({ [name]: value });
   };
 
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.onSubmit(this.state.name, this.state.number);
+    this.setState({ name: '', number: '' });
+  };
   render() {
     return (
-      <div>
-        <Formik
-          initialValues={{ name: '', phoneNumber: '' }}
-          validationSchema={Yup.object({
-            name: Yup.string()
-              .matches(
-                /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
-                "Name can contain only letters, ', - and space. For example: Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan etc.",
-              )
-              .required(),
-            phoneNumber: Yup.string()
-              .matches(
-                /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
-                'Phone number should contain only numbers and it also could contain spaces, dash, parenthesis and startts with +',
-              )
-              .required(),
-          })}
-          onSubmit={(values, { resetForm }) => {
-            this.props.onSubmit(values);
-            resetForm();
-          }}
-        >
-          <Form className={s.form}>
-            <label className={s.label}>
-              Name:
-              <Field className={s.fieldInput} name="name" type="text" />
-              <ErrorMessage
-                name="name"
-                component="span"
-                className={s.validatorError}
-              />
-            </label>
-            <label className={s.label}>
-              Phone number:
-              <Field className={s.fieldInput} name="phoneNumber" type="tel" />
-              <ErrorMessage
-                name="phoneNumber"
-                component="span"
-                className={s.validatorError}
-              />
-            </label>
-            <FormButton type="submit" label="Add contact" />
-          </Form>
-        </Formik>
-      </div>
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name
+          <input
+            type="text"
+            name="name"
+            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+            required
+            onChange={this.handleChange}
+            value={this.state.name}
+          />
+        </label>
+        <label>
+          Phone Number:
+          <input
+            type="tel"
+            name="number"
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+            required
+            onChange={this.handleChange}
+            value={this.state.number}
+          />
+        </label>
+        <button type="submit">Add</button>
+      </form>
     );
   }
 }
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
-
 export default ContactForm;
