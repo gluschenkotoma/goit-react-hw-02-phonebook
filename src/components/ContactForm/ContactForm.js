@@ -42,6 +42,7 @@ const initialValues = {
 class ContactForm extends Component {
   handleSubmit = (values, { resetForm }) => {
     this.props.onSubmit(values);
+
     console.log(values);
     resetForm();
   };
