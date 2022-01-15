@@ -13,7 +13,7 @@ class App extends Component {
     filter: "",
   };
 
-  addContact = (name, number) => {
+  addContact = ({ name, phoneNumber }) => {
     if (this.isInContacts(name)) {
       alert(`${name} is already in contacts`);
       return;
@@ -21,7 +21,7 @@ class App extends Component {
     const contact = {
       id: shortid.generate(),
       name,
-      number,
+      phoneNumber,
     };
 
     this.setState((prevState) => ({
