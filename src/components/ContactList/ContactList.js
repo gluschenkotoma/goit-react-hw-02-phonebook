@@ -1,5 +1,6 @@
 import React from "react";
 import s from "./ContactList.module.scss";
+import PropTypes from "prop-types";
 
 const ContactList = ({ contacts, onDeleteContact }) => (
   <ul className={s.list}>
@@ -14,4 +15,16 @@ const ContactList = ({ contacts, onDeleteContact }) => (
     ))}
   </ul>
 );
+
+ContactList.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      phoneNumber: PropTypes.string.isRequired,
+    })
+  ),
+  onDeleteContact: PropTypes.func,
+};
+
 export default ContactList;

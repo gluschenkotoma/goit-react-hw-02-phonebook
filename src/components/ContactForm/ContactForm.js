@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
+
 import s from "./ContactForm.module.scss";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -84,4 +86,18 @@ class ContactForm extends Component {
     );
   }
 }
+
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
+
 export default ContactForm;
+
+// Formik -компонент обертка
+// initialValues={{ name: '', ... }}
+// onSubmit={(values, actions) -
+// values: {name: '', age: '', email: ''} обьект собраных значений
+// actions:   ProductReviewForm.jsx:20 actions: {resetForm: ƒ, validateForm: ƒ, validateField: ƒ, setErrors: ƒ, setFieldError: ƒ, …}
+// actions ->полезные методы || свой метод
+// validationSchema={schema}- валидация схемы
+// ErrorMessage- показывает где сработала валидация с ошибками
