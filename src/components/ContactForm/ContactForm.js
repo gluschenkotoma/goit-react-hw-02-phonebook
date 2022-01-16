@@ -26,7 +26,7 @@ const validationSchema = Yup.object({
       "Name can contain only letters, ', - and space. For example: Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan etc."
     )
     .required(),
-  phoneNumber: Yup.string()
+  number: Yup.string()
     .matches(
       /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
       "Phone number should contain only numbers and it also could contain spaces, dash, parenthesis and startts with +"
@@ -36,7 +36,7 @@ const validationSchema = Yup.object({
 
 const initialValues = {
   name: "",
-  phoneNumber: "",
+  number: "",
 };
 
 class ContactForm extends Component {
@@ -68,15 +68,15 @@ class ContactForm extends Component {
             </div>
           </div>
           <div>
-            <label htmlFor="phoneNumber">Phone number:</label>
+            <label htmlFor="number">Phone number:</label>
             <div>
               <Field
                 className={s.fieldInput}
-                name="phoneNumber"
+                name="number"
                 type="text"
-                placeholder="phoneNumber"
+                placeholder="number"
               />
-              <FormError name="phoneNumber" />
+              <FormError name="number" />
             </div>
           </div>
           <button className={s.button} type="submit">

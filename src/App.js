@@ -13,7 +13,7 @@ class App extends Component {
     filter: "",
   };
 
-  addContact = ({ name, phoneNumber }) => {
+  addContact = ({ name, number }) => {
     if (this.isInContacts(name)) {
       alert(`${name} is already in contacts`);
       return;
@@ -21,7 +21,7 @@ class App extends Component {
     const contact = {
       id: shortid.generate(),
       name,
-      phoneNumber,
+      number,
     };
 
     this.setState((prevState) => ({
@@ -31,11 +31,13 @@ class App extends Component {
 
   isInContacts = (name) => {
     name = name.toLowerCase();
-    return (
-      this.state.contacts.filter((contact) =>
-        contact.name.toLowerCase().includes(name)
-      ).length > 0
+    const isFoundName = this.state.contacts.find(
+      (contact) => contact.name.toLowerCase() === name
     );
+    if (isFoundName) {
+      alert(`${name} was found`);
+      return;
+    }
   };
 
   deleteContact = (contactId) => {
